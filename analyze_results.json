@@ -1,73 +1,323 @@
 {
   "meta": {
     "workbook": "input.xlsx",
-    "sheet": "Sheet2",
+    "sheet": "Sheet3",
     "unit": "pt",
-    "shape_count": 7
+    "shape_count": 19
   },
   "zones_raw": [
     {
+      "id": "Rectangle 2",
+      "rect": [
+        159.75,
+        230.25,
+        584.25,
+        540.0
+      ],
+      "area": 131488.875,
+      "inside": 13
+    },
+    {
+      "id": "Rectangle 3",
+      "rect": [
+        183.0,
+        259.5,
+        350.25,
+        517.5
+      ],
+      "area": 43150.5,
+      "inside": 5
+    },
+    {
+      "id": "Rectangle 4",
+      "rect": [
+        381.0,
+        259.5,
+        548.25,
+        517.5
+      ],
+      "area": 43150.5,
+      "inside": 4
+    },
+    {
       "id": "Rectangle 5",
       "rect": [
-        150.0000762939453,
-        104.25,
-        463.5000762939453,
-        370.5
+        196.5,
+        314.2499084472656,
+        327.75,
+        391.4999084472656
       ],
-      "area": 83469.375,
-      "inside": 4
+      "area": 10139.0625,
+      "inside": 1
+    },
+    {
+      "id": "Rectangle 7",
+      "rect": [
+        403.5,
+        313.4999084472656,
+        534.75,
+        390.7499084472656
+      ],
+      "area": 10139.0625,
+      "inside": 1
     },
     {
       "id": "Rectangle 1",
       "rect": [
-        173.25,
-        158.25,
-        451.5,
-        358.5
+        142.4999237060547,
+        131.25,
+        624.7500152587891,
+        564.0
       ],
-      "area": 55719.5625,
-      "inside": 2
+      "area": 208693.7271194458,
+      "inside": 16
+    },
+    {
+      "id": "Rectangle 6",
+      "rect": [
+        195.75,
+        409.4999084472656,
+        327.0,
+        486.7499084472656
+      ],
+      "area": 10139.0625,
+      "inside": 1
+    },
+    {
+      "id": "Rectangle 8",
+      "rect": [
+        402.75,
+        408.7499084472656,
+        534.0,
+        485.9999084472656
+      ],
+      "area": 10139.0625,
+      "inside": 1
+    },
+    {
+      "id": "Cloud Callout 10",
+      "rect": [
+        303.0,
+        39.0,
+        432.0,
+        102.75
+      ],
+      "area": 8223.75,
+      "inside": 0
     }
   ],
   "zones": [
     {
+      "zone_id": "Rectangle 2",
+      "zone_rect": [
+        159.75,
+        230.25,
+        584.25,
+        540.0
+      ],
+      "text_raw": "10.10.0.0/16",
+      "normalized": "NETWORKING",
+      "score": 1.0,
+      "normalized_source": "ai",
+      "resource_label": "VPC",
+      "resource_label_conf": 0.8,
+      "resource_category": "NETWORKING",
+      "resource_label_reason": "CIDRブロックであり、サブネット（Public subnet, Private subnet）が含まれているため。"
+    },
+    {
+      "zone_id": "Rectangle 3",
+      "zone_rect": [
+        183.0,
+        259.5,
+        350.25,
+        517.5
+      ],
+      "text_raw": "Availabillty Zone",
+      "normalized": "ZONE",
+      "score": 1.0,
+      "normalized_source": "ai",
+      "resource_label": "AVAILABILITY_ZONE",
+      "resource_label_conf": 0.7,
+      "resource_category": "ZONE",
+      "resource_label_reason": "Availability Zoneというテキストが含まれているため。"
+    },
+    {
+      "zone_id": "Rectangle 4",
+      "zone_rect": [
+        381.0,
+        259.5,
+        548.25,
+        517.5
+      ],
+      "text_raw": "Availabillty Zone",
+      "normalized": "ZONE",
+      "score": 1.0,
+      "normalized_source": "ai",
+      "resource_label": "AVAILABILITY_ZONE",
+      "resource_label_conf": 0.7,
+      "resource_category": "ZONE",
+      "resource_label_reason": "Availability Zoneというテキストが含まれているため。"
+    },
+    {
       "zone_id": "Rectangle 5",
       "zone_rect": [
-        150.0000762939453,
-        104.25,
-        463.5000762939453,
-        370.5
+        196.5,
+        314.2499084472656,
+        327.75,
+        391.4999084472656
       ],
-      "label_raw": "AWSクラウド",
-      "normalized": "cloud_aws",
-      "score": 1.8
+      "text_raw": "Public subnet",
+      "normalized": "ZONE",
+      "score": 1.0,
+      "normalized_source": "ai",
+      "resource_label": "PUBLIC_SUBNET",
+      "resource_label_conf": 0.9,
+      "resource_category": "ZONE",
+      "resource_label_reason": "Public subnetというテキストが含まれているため。"
+    },
+    {
+      "zone_id": "Rectangle 7",
+      "zone_rect": [
+        403.5,
+        313.4999084472656,
+        534.75,
+        390.7499084472656
+      ],
+      "text_raw": "Public subnet",
+      "normalized": "ZONE",
+      "score": 1.0,
+      "normalized_source": "ai",
+      "resource_label": "PUBLIC_SUBNET",
+      "resource_label_conf": 1.0,
+      "resource_category": "ZONE",
+      "resource_label_reason": "パブリックサブネットであるというテキストが含まれているため。"
     },
     {
       "zone_id": "Rectangle 1",
       "zone_rect": [
-        173.25,
-        158.25,
-        451.5,
-        358.5
+        142.4999237060547,
+        131.25,
+        624.7500152587891,
+        564.0
       ],
-      "label_raw": "VPC",
-      "normalized": "vpc",
-      "score": 1.8
+      "text_raw": "AWS",
+      "normalized": "ZONE",
+      "score": 1.0,
+      "normalized_source": "ai",
+      "resource_label": "AWS_CLOUD_ZONE",
+      "resource_label_conf": 0.95,
+      "resource_category": "ZONE",
+      "resource_label_reason": "AWSというテキストと、サブネット、インターネットゲートウェイ、EC2などの要素が含まれているため。"
+    },
+    {
+      "zone_id": "Rectangle 6",
+      "zone_rect": [
+        195.75,
+        409.4999084472656,
+        327.0,
+        486.7499084472656
+      ],
+      "text_raw": "Private subnet",
+      "normalized": "ZONE",
+      "score": 1.0,
+      "normalized_source": "ai",
+      "resource_label": "PRIVATE_SUBNET",
+      "resource_label_conf": 1.0,
+      "resource_category": "ZONE",
+      "resource_label_reason": "プライベートサブネットであるというテキストが含まれているため。"
+    },
+    {
+      "zone_id": "Rectangle 8",
+      "zone_rect": [
+        402.75,
+        408.7499084472656,
+        534.0,
+        485.9999084472656
+      ],
+      "text_raw": "Private subnet",
+      "normalized": "ZONE",
+      "score": 1.0,
+      "normalized_source": "ai",
+      "resource_label": "PRIVATE_SUBNET",
+      "resource_label_conf": 1.0,
+      "resource_category": "ZONE",
+      "resource_label_reason": "プライベートサブネットであるというテキストが含まれているため。"
+    },
+    {
+      "zone_id": "Cloud Callout 10",
+      "zone_rect": [
+        303.0,
+        39.0,
+        432.0,
+        102.75
+      ],
+      "text_raw": "InterNet",
+      "normalized": "ZONE",
+      "score": 1.0,
+      "normalized_source": "ai",
+      "resource_label": "INTERNET_ZONE",
+      "resource_label_conf": 1.0,
+      "resource_category": "ZONE",
+      "resource_label_reason": "インターネットを示すテキストが含まれているため。"
     }
   ],
   "zone_relations": {
     "hierarchy": {
+      "Rectangle 2": {
+        "parent": "Rectangle 1",
+        "children": [
+          "Rectangle 3",
+          "Rectangle 4"
+        ],
+        "depth": 1
+      },
+      "Rectangle 3": {
+        "parent": "Rectangle 2",
+        "children": [
+          "Rectangle 5",
+          "Rectangle 6"
+        ],
+        "depth": 2
+      },
+      "Rectangle 4": {
+        "parent": "Rectangle 2",
+        "children": [
+          "Rectangle 7",
+          "Rectangle 8"
+        ],
+        "depth": 2
+      },
       "Rectangle 5": {
+        "parent": "Rectangle 3",
+        "children": [],
+        "depth": 3
+      },
+      "Rectangle 7": {
+        "parent": "Rectangle 4",
+        "children": [],
+        "depth": 3
+      },
+      "Rectangle 1": {
         "parent": null,
         "children": [
-          "Rectangle 1"
+          "Rectangle 2"
         ],
         "depth": 0
       },
-      "Rectangle 1": {
-        "parent": "Rectangle 5",
+      "Rectangle 6": {
+        "parent": "Rectangle 3",
         "children": [],
-        "depth": 1
+        "depth": 3
+      },
+      "Rectangle 8": {
+        "parent": "Rectangle 4",
+        "children": [],
+        "depth": 3
+      },
+      "Cloud Callout 10": {
+        "parent": null,
+        "children": [],
+        "depth": 0
       }
     },
     "overlaps": [],
@@ -75,74 +325,163 @@
   },
   "assignments": [
     {
-      "node_id": "Rectangle 2",
+      "node_id": "Rectangle 9",
       "zone_id": "Rectangle 1",
-      "zone_normalized": "vpc",
+      "zone_normalized": "ZONE",
       "confidence": "high",
       "overlap": 1.0,
-      "text_raw": "Webサーバ1",
+      "text_raw": "Internet gateway",
       "text_source": "TextFrame2.debug",
-      "effective_text": "Webサーバ1",
-      "inside_texts": []
-    },
-    {
-      "node_id": "Rectangle 3",
-      "zone_id": "Rectangle 1",
-      "zone_normalized": "vpc",
-      "confidence": "high",
-      "overlap": 1.0,
-      "text_raw": "インターネットGW",
-      "text_source": "TextFrame2.debug",
-      "effective_text": "インターネットGW",
       "inside_texts": [],
-      "note": "auto-reassigned-[gateway]-prefer-deeper(intersect)"
+      "resource_label": "IGW",
+      "resource_label_conf": 1.0,
+      "resource_category": "GATEWAY",
+      "resource_label_reason": "インターネットゲートウェイであるというテキストが含まれているため。"
     },
     {
-      "node_id": "Rectangle 4",
-      "zone_id": "zone_internet",
-      "zone_normalized": "internet",
+      "node_id": "Rectangle 11",
+      "zone_id": "Rectangle 5",
+      "zone_normalized": "ZONE",
       "confidence": "high",
-      "overlap": 0.0,
-      "note": "auto-reassigned-to-internet",
-      "text_raw": "ユーザ",
+      "overlap": 1.0,
+      "text_raw": "Nat gateway",
       "text_source": "TextFrame2.debug",
-      "effective_text": "ユーザ",
-      "inside_texts": []
+      "inside_texts": [],
+      "resource_label": "NATGW",
+      "resource_label_conf": 1.0,
+      "resource_category": "GATEWAY",
+      "resource_label_reason": "テキストに\"Nat gateway\"が含まれているため。"
+    },
+    {
+      "node_id": "Rectangle 12",
+      "zone_id": "Rectangle 6",
+      "zone_normalized": "ZONE",
+      "confidence": "high",
+      "overlap": 1.0,
+      "text_raw": "EC2",
+      "text_source": "TextFrame2.debug",
+      "inside_texts": [],
+      "resource_label": "EC2",
+      "resource_label_conf": 1.0,
+      "resource_category": "COMPUTE",
+      "resource_label_reason": "テキストに\"EC2\"が含まれているため。"
+    },
+    {
+      "node_id": "Rectangle 13",
+      "zone_id": "Rectangle 8",
+      "zone_normalized": "ZONE",
+      "confidence": "high",
+      "overlap": 1.0,
+      "text_raw": "EC2",
+      "text_source": "TextFrame2.debug",
+      "inside_texts": [],
+      "resource_label": "EC2",
+      "resource_label_conf": 1.0,
+      "resource_category": "COMPUTE",
+      "resource_label_reason": "テキストに\"EC2\"が含まれているため。"
+    },
+    {
+      "node_id": "Rectangle 14",
+      "zone_id": "Rectangle 7",
+      "zone_normalized": "ZONE",
+      "confidence": "high",
+      "overlap": 1.0,
+      "text_raw": "EC2",
+      "text_source": "TextFrame2.debug",
+      "inside_texts": [],
+      "resource_label": "EC2",
+      "resource_label_conf": 1.0,
+      "resource_category": "COMPUTE",
+      "resource_label_reason": "テキストに\"EC2\"が含まれているため。"
     }
   ],
   "edges": [
     {
-      "id": "Straight Arrow Connector 6",
-      "src": "Rectangle 4",
-      "dst": "Rectangle 3",
+      "id": "Straight Connector 16",
+      "src": "Rectangle 14",
+      "dst": "Rectangle 11",
       "dir_hint": "src_to_dst",
       "confidence": "high",
       "kind": "connector",
       "protocol": "unknown",
       "protocol_raw": "",
-      "src_zone": "zone_internet",
-      "dst_zone": "Rectangle 1"
+      "src_zone": "Rectangle 7",
+      "dst_zone": "Rectangle 5"
     },
     {
-      "id": "Straight Arrow Connector 9",
-      "src": "Rectangle 3",
-      "dst": "Rectangle 2",
+      "id": "Straight Connector 17",
+      "src": "Rectangle 13",
+      "dst": "Rectangle 11",
       "dir_hint": "src_to_dst",
       "confidence": "high",
+      "kind": "connector",
+      "protocol": "unknown",
+      "protocol_raw": "",
+      "src_zone": "Rectangle 8",
+      "dst_zone": "Rectangle 5"
+    },
+    {
+      "id": "Straight Connector 20",
+      "src": "Rectangle 12",
+      "dst": "Rectangle 11",
+      "dir_hint": "src_to_dst",
+      "confidence": "high",
+      "kind": "connector",
+      "protocol": "unknown",
+      "protocol_raw": "",
+      "src_zone": "Rectangle 6",
+      "dst_zone": "Rectangle 5"
+    },
+    {
+      "id": "Straight Connector 24",
+      "src": "Rectangle 9",
+      "dst": "",
+      "dir_hint": "src_to_dst",
+      "confidence": "medium",
       "kind": "connector",
       "protocol": "unknown",
       "protocol_raw": "",
       "src_zone": "Rectangle 1",
+      "dst_zone": null
+    },
+    {
+      "id": "Straight Connector 25",
+      "src": "Cloud Callout 10",
+      "dst": "Rectangle 9",
+      "dir_hint": "src_to_dst",
+      "confidence": "high",
+      "kind": "connector",
+      "protocol": "unknown",
+      "protocol_raw": "",
+      "src_zone": null,
       "dst_zone": "Rectangle 1"
     }
   ],
   "cross_zone_edges": [
     {
-      "edge_id": "Straight Arrow Connector 6",
-      "src_node": "Rectangle 4",
-      "dst_node": "Rectangle 3",
-      "src_zone": "zone_internet",
-      "dst_zone": "Rectangle 1",
+      "edge_id": "Straight Connector 16",
+      "src_node": "Rectangle 14",
+      "dst_node": "Rectangle 11",
+      "src_zone": "Rectangle 7",
+      "dst_zone": "Rectangle 5",
+      "protocol": "unknown",
+      "protocol_raw": ""
+    },
+    {
+      "edge_id": "Straight Connector 17",
+      "src_node": "Rectangle 13",
+      "dst_node": "Rectangle 11",
+      "src_zone": "Rectangle 8",
+      "dst_zone": "Rectangle 5",
+      "protocol": "unknown",
+      "protocol_raw": ""
+    },
+    {
+      "edge_id": "Straight Connector 20",
+      "src_node": "Rectangle 12",
+      "dst_node": "Rectangle 11",
+      "src_zone": "Rectangle 6",
+      "dst_zone": "Rectangle 5",
       "protocol": "unknown",
       "protocol_raw": ""
     }

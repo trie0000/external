@@ -1,27 +1,48 @@
-# 構成図解析レポート（input.xlsx / Sheet2）
+# 構成図解析レポート（input.xlsx / Sheet3）
 
 ## サマリ
-- 図形数: 7
-- ゾーン候補: 2
-- ノード数（非コネクタ・ラベル除外）: 3
-- エッジ数（コネクタ+疑似）: 2
+- 図形数: 19
+- ゾーン候補: 9
+- ノード数（非コネクタ・ラベル除外）: 5
+- エッジ数（コネクタ+疑似）: 5
 
-## ゾーン（人間ラベル）
-- `Rectangle 5`: **AWSクラウド** rect=(150,104,463,370)
-- `Rectangle 1`: **VPC** rect=(173,158,451,358)
+## ゾーン（text_raw と resource_* 参考情報）
+- `Rectangle 2`: **10.10.0.0/16** rect=(159,230,584,540) normalized=NETWORKING ai_label=VPC (cat=NETWORKING, conf=0.8)
+- `Rectangle 3`: **Availabillty Zone** rect=(183,259,350,517) normalized=ZONE ai_label=AVAILABILITY_ZONE (cat=ZONE, conf=0.7)
+- `Rectangle 4`: **Availabillty Zone** rect=(381,259,548,517) normalized=ZONE ai_label=AVAILABILITY_ZONE (cat=ZONE, conf=0.7)
+- `Rectangle 5`: **Public subnet** rect=(196,314,327,391) normalized=ZONE ai_label=PUBLIC_SUBNET (cat=ZONE, conf=0.9)
+- `Rectangle 7`: **Public subnet** rect=(403,313,534,390) normalized=ZONE ai_label=PUBLIC_SUBNET (cat=ZONE, conf=1.0)
+- `Rectangle 1`: **AWS** rect=(142,131,624,564) normalized=ZONE ai_label=AWS_CLOUD_ZONE (cat=ZONE, conf=0.95)
+- `Rectangle 6`: **Private subnet** rect=(195,409,327,486) normalized=ZONE ai_label=PRIVATE_SUBNET (cat=ZONE, conf=1.0)
+- `Rectangle 8`: **Private subnet** rect=(402,408,534,485) normalized=ZONE ai_label=PRIVATE_SUBNET (cat=ZONE, conf=1.0)
+- `Cloud Callout 10`: **InterNet** rect=(303,39,432,102) normalized=ZONE ai_label=INTERNET_ZONE (cat=ZONE, conf=1.0)
 
 ## ゾーン階層
-- Rectangle 5: depth=0 parent=- children=1
-- Rectangle 1: depth=1 parent=Rectangle 5 children=0
+- Rectangle 1: depth=0 parent=- children=1
+- Cloud Callout 10: depth=0 parent=- children=0
+- Rectangle 2: depth=1 parent=Rectangle 1 children=2
+- Rectangle 3: depth=2 parent=Rectangle 2 children=2
+- Rectangle 4: depth=2 parent=Rectangle 2 children=2
+- Rectangle 5: depth=3 parent=Rectangle 3 children=0
+- Rectangle 7: depth=3 parent=Rectangle 4 children=0
+- Rectangle 6: depth=3 parent=Rectangle 3 children=0
+- Rectangle 8: depth=3 parent=Rectangle 4 children=0
 
 ## ノードのゾーン割当（人間ラベルで表示）
-- node=`Rectangle 2` → zone=`VPC` (conf=high, overlap=1.0, role=web) text='Webサーバ1' src=TextFrame2.debug note=
-- node=`Rectangle 3` → zone=`VPC` (conf=high, overlap=1.0) text='インターネットGW' src=TextFrame2.debug note=auto-reassigned-[gateway]-prefer-deeper(intersect)
-- node=`Rectangle 4` → zone=`Internet` (conf=high, overlap=0.0) text='ユーザ' src=TextFrame2.debug note=auto-reassigned-to-internet
+- node=`Rectangle 9` → zone=`AWS` (conf=high, overlap=1.0) text='Internet gateway' src=TextFrame2.debug note=
+- node=`Rectangle 11` → zone=`Public subnet` (conf=high, overlap=1.0) text='Nat gateway' src=TextFrame2.debug note=
+- node=`Rectangle 12` → zone=`Private subnet` (conf=high, overlap=1.0) text='EC2' src=TextFrame2.debug note=
+- node=`Rectangle 13` → zone=`Private subnet` (conf=high, overlap=1.0) text='EC2' src=TextFrame2.debug note=
+- node=`Rectangle 14` → zone=`Public subnet` (conf=high, overlap=1.0) text='EC2' src=TextFrame2.debug note=
 
 ## エッジ推定
-- edge=`Straight Arrow Connector 6` kind=connector Rectangle 4 -> Rectangle 3 (dir_hint=src_to_dst, conf=high, proto=unknown (), zones=Internet->VPC)
-- edge=`Straight Arrow Connector 9` kind=connector Rectangle 3 -> Rectangle 2 (dir_hint=src_to_dst, conf=high, proto=unknown (), zones=VPC->VPC)
+- edge=`Straight Connector 16` kind=connector Rectangle 14 -> Rectangle 11 (dir_hint=src_to_dst, conf=high, proto=unknown (), zones=Public subnet->Public subnet)
+- edge=`Straight Connector 17` kind=connector Rectangle 13 -> Rectangle 11 (dir_hint=src_to_dst, conf=high, proto=unknown (), zones=Private subnet->Public subnet)
+- edge=`Straight Connector 20` kind=connector Rectangle 12 -> Rectangle 11 (dir_hint=src_to_dst, conf=high, proto=unknown (), zones=Private subnet->Public subnet)
+- edge=`Straight Connector 24` kind=connector Rectangle 9 ->  (dir_hint=src_to_dst, conf=medium, proto=unknown (), zones=AWS->(不明))
+- edge=`Straight Connector 25` kind=connector Cloud Callout 10 -> Rectangle 9 (dir_hint=src_to_dst, conf=high, proto=unknown (), zones=(不明)->AWS)
 
 ## 越境通信（ゾーン間エッジ）
-- Straight Arrow Connector 6: Rectangle 4@Internet -> Rectangle 3@VPC, proto=unknown()
+- Straight Connector 16: Rectangle 14@Public subnet -> Rectangle 11@Public subnet, proto=unknown()
+- Straight Connector 17: Rectangle 13@Private subnet -> Rectangle 11@Public subnet, proto=unknown()
+- Straight Connector 20: Rectangle 12@Private subnet -> Rectangle 11@Public subnet, proto=unknown()

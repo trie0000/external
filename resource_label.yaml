@@ -45,6 +45,36 @@ categories:
 vocabulary:
 
   # ---------- Network / Zone ----------
+  - label: AWS_CLOUD_ZONE
+    category: ZONE
+    description: AWS上のクラウド全体を示す論理ゾーン
+    synonyms: ["AWSクラウド", "Amazon Web Services", "AWS環境", "AWS", "aws", "AWS Cloud"]
+    vendors:
+      aws: { service: "Amazon Web Services", resource_types: [] }
+
+  - label: AZURE_CLOUD_ZONE
+    category: ZONE
+    description: Azure上のクラウド全体を示す論理ゾーン
+    synonyms: ["Azureクラウド", "Microsoft Azure", "Azure環境"]
+    vendors:
+      azure: { service: "Microsoft Azure", resource_types: [] }
+
+  - label: GCP_CLOUD_ZONE
+    category: ZONE
+    description: Google Cloud上のクラウド全体を示す論理ゾーン
+    synonyms: ["GCPクラウド", "Google Cloud Platform", "GCP環境", "Google Cloud"]
+    vendors:
+      gcp: { service: "Google Cloud Platform", resource_types: [] }
+
+  - label: AVAILABILITY_ZONE
+    category: ZONE
+    description: AWSリージョン内の独立した障害区分（サブネットは必ず1つのAZに属する）
+    synonyms: ["Availability Zone", "AZ", "ap-northeast-1a", "ap-northeast-1c"]
+    vendors:
+      aws:   {service: "Amazon VPC",       resource_types: ["Availability Zone"] }
+      azure: {service: "Virtual Network",  resource_types: ["Availability Zone"] }
+      gcp:   {service: "VPC",              resource_types: ["Zone"] }
+
   - label: DMZ
     category: ZONE
     description: 公開向けシステムを配置する境界ネットワーク領域
@@ -74,6 +104,30 @@ vocabulary:
     description: GCPの仮想ネットワーク
     synonyms: ["VPC (GCP)", "VPC Network"]
     vendors: { aws: {}, azure: {}, gcp: { service: "Google Cloud VPC", resource_types: ["Network","Subnet"] } }
+
+  - label: INTERNET_ZONE
+    category: ZONE
+    description: インターネット（外部ネットワーク）を示す論理ゾーン
+    synonyms: ["Internet", "InterNet", "INTERNET", "インターネット", "外部ネットワーク", "Public Internet"]
+    vendors: {aws: {}, azure: {}, gcp: {}}
+
+  - label: PUBLIC_SUBNET
+    category: ZONE
+    description: 外部公開用のサブネット（IGW/NAT等と接続されることが多い）
+    synonyms: ["Public Subnet", "PUBLIC SUBNET", "パブリックサブネット", "公開サブネット"]
+    vendors:
+      aws:   {service: "Amazon VPC",       resource_types: ["Subnet"]}
+      azure: {service: "Virtual Network",  resource_types: ["Subnet"]}
+      gcp:   {service: "VPC",              resource_types: ["Subnet"]}
+
+  - label: PRIVATE_SUBNET
+    category: ZONE
+    description: 内部向けの非公開サブネット（インターネットへ直接は公開しない）
+    synonyms: ["Private Subnet", "PRIVATE SUBNET", "プライベートサブネット", "内部サブネット", "非公開サブネット"]
+    vendors:
+      aws:   {service: "Amazon VPC",       resource_types: ["Subnet"]}
+      azure: {service: "Virtual Network",  resource_types: ["Subnet"]}
+      gcp:   {service: "VPC",              resource_types: ["Subnet"]}
 
   - label: IGW
     category: GATEWAY
@@ -535,3 +589,66 @@ vocabulary:
     vendors:
       azure: { service: "GitHub (Microsoft)", resource_types: ["Repository","Actions"] }
 
+# ---------- Server (用途別) ----------
+  - label: GENERIC_SERVER
+    category: COMPUTE
+    description: 用途不明・汎用のサーバ
+    synonyms: ["サーバ", "server", "汎用サーバ", "sv", "host"]
+    vendors: {}
+
+  - label: WEB_SERVER
+    category: COMPUTE
+    description: Web公開/フロントエンドを提供するサーバ
+    synonyms: ["Webサーバ", "web server", "frontend server", "www", "nginx", "apache"]
+    vendors: {}
+
+  - label: APP_SERVER
+    category: COMPUTE
+    description: 業務ロジックを実行するアプリケーションサーバ
+    synonyms: ["APサーバ", "アプリサーバ", "application server", "app server", "tomcat", "jboss", "was"]
+    vendors: {}
+
+  - label: DB_SERVER
+    category: COMPUTE
+    description: データベースを提供するサーバ
+    synonyms: ["DBサーバ", "database server", "RDB", "mysql server", "postgres server", "oracle server", "sql server"]
+    vendors: {}
+
+  # よくある補助用途（必要に応じて）
+  - label: CACHE_SERVER
+    category: COMPUTE
+    description: キャッシュ/インメモリデータを提供するサーバ
+    synonyms: ["cache server", "redis server", "memcached server"]
+    vendors: {}
+
+  - label: BATCH_SERVER
+    category: COMPUTE
+    description: バッチ処理や定期ジョブを実行するサーバ
+    synonyms: ["batch", "ジョブサーバ", "job server", "scheduler"]
+    vendors: {}
+
+  - label: FILE_SERVER
+    category: COMPUTE
+    description: 共有ファイル/ストレージを提供するサーバ
+    synonyms: ["ファイルサーバ", "file server", "smb", "nfs"]
+    vendors: {}
+
+  - label: PROXY_SERVER
+    category: COMPUTE
+    description: 転送/中継/アクセス制御を行うプロキシサーバ
+    synonyms: ["proxy", "プロキシ", "squid", "forward proxy", "reverse proxy"]
+    vendors: {}
+
+  # ---------- Actor（図に登場する主体/端末） ----------
+  - label: USER
+    category: ACTOR
+    description: システムの利用者/クライアント（人や端末）
+    synonyms: ["User", "ユーザ", "利用者", "クライアント", "端末", "PC", "モバイル", "スマホ", "ブラウザ"]
+    vendors: {}
+
+  # （必要なら外部システムの抽象カテゴリも）
+  - label: EXTERNAL_SYSTEM
+    category: ACTOR
+    description: 連携先の外部システム/SaaS/他社サービス
+    synonyms: ["外部システム", "SaaS", "他社サービス", "外部API", "3rd party"]
+    vendors: {}

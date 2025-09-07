@@ -19,7 +19,8 @@ MSO_TEXTBOX = 17
 # マージン/閾値
 SELECTION_MARGIN_PT = 30.0
 CONTAIN_MARGIN_PT = 8.0
-OVERLAP_MIN_RATIO = 0.10  # 10%
+# ※ inside_texts は「完全内包のみ」を記録する運用に変更したため未使用
+# OVERLAP_MIN_RATIO = 0.10  # 10%
 
 # --------------------------
 # ユーティリティ
@@ -378,7 +379,8 @@ def shape_basic_dict(shape) -> dict:
     d = {
         "id": getattr(shape, "Name", ""),
         "rect_ltrb": rect_abs(shape),
-        "text": text_val or "",
+        # text は廃止。抽出テキストは text_orig のみに保持
+        "text_orig": text_val or "",
         "text_source": text_source or "",
         "zorder": int(getattr(shape, "ZOrderPosition", 0)),
         "is_connector": False,
@@ -496,6 +498,37 @@ def walk_flatten(container, out_list):
         else:
             out_list.append(shape_basic_dict(sh))
 
+def dump_with_compact_inside_texts(data, fp, indent=2, ensure_ascii=False):
+    def _write(o, level):
+        if isinstance(o, dict):
+            fp.write('{\n')
+            items = list(o.items())
+            for i, (k, v) in enumerate(items):
+                fp.write(' ' * (level * indent) + json.dumps(k, ensure_ascii=ensure_ascii) + ': ')
+                if k == "inside_texts" and isinstance(v, list):
+                    # 配列は複数行、要素は1行のコンパクト JSON
+                    fp.write('[\n')
+                    for j, elem in enumerate(v):
+                        fp.write(' ' * ((level + 1) * indent))
+                        fp.write(json.dumps(elem, ensure_ascii=ensure_ascii, separators=(',', ':')))
+                        fp.write(',\n' if j != len(v) - 1 else '\n')
+                    fp.write(' ' * (level * indent) + ']')
+                else:
+                    _write(v, level + 1)
+                fp.write(',\n' if i != len(items) - 1 else '\n')
+            fp.write(' ' * ((level - 1) * indent) + '}')
+        elif isinstance(o, list):
+            fp.write('[\n')
+            for i, x in enumerate(o):
+                fp.write(' ' * (level * indent))
+                _write(x, level + 1)
+                fp.write(',\n' if i != len(o) - 1 else '\n')
+            fp.write(' ' * ((level - 1) * indent) + ']')
+        else:
+            fp.write(json.dumps(o, ensure_ascii=ensure_ascii))
+
+    _write(data, 1)
+
 # --------------------------
 # main
 # --------------------------
@@ -559,7 +592,8 @@ def main():
 
     shapes = [d for d in all_shapes if rect_intersects(d["rect_ltrb"], selection_bbox)]
 
-    text_shapes = [s for s in shapes if (s.get("text") or "").strip()]
+    # text は廃止運用。inside_texts の候補は text_orig を持つ図形のみ
+    text_shapes = [s for s in shapes if (s.get("text_orig") or "").strip()]
     for s in shapes:
         s["inside_texts"] = []
         r = s["rect_ltrb"]
@@ -567,11 +601,12 @@ def main():
             if t["id"] == s["id"]:
                 continue
             tr = t["rect_ltrb"]
+            # 完全内包のみ記録（重なりは無視）
             if rect_contains_with_margin(r, tr, CONTAIN_MARGIN_PT):
-                s["inside_texts"].append(t["id"])
-                continue
-            if overlap_ratio(tr, r) >= OVERLAP_MIN_RATIO:
-                s["inside_texts"].append(t["id"])
+                s["inside_texts"].append({
+                    "id": t["id"],
+                    "text_orig": t.get("text_orig",""),
+                })
                 continue
 
     data = {
@@ -583,7 +618,7 @@ def main():
         "shapes": shapes
     }
     with open(args.out, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+        dump_with_compact_inside_texts(data, f, indent=2, ensure_ascii=False)
     print(f"Wrote {args.out} (shapes={len(shapes)}, bbox={selection_bbox})")
 
 if __name__ == "__main__":

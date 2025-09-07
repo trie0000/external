@@ -2,12 +2,22 @@
   "workbook": "input.xlsx",
   "sheet": "Sheet3",
   "unit": "pt",
-  "selection_bbox": [112.49992370605469, 9.0, 654.7500152587891, 594.0],
+  "selection_bbox": [
+    112.49992370605469,
+    9.0,
+    654.7500152587891,
+    594.0
+  ],
   "shape_count": 19,
   "shapes": [
     {
       "id": "Rectangle 1",
-      "rect_ltrb": [142.4999237060547, 131.25, 624.7500152587891, 564.0],
+      "rect_ltrb": [
+        142.4999237060547,
+        131.25,
+        624.7500152587891,
+        564.0
+      ],
       "text_orig": "AWS",
       "text_source": "TextFrame2.debug",
       "zorder": 1,
@@ -30,11 +40,20 @@
         {"id":"Rectangle 12","text_orig":"EC2"},
         {"id":"Rectangle 13","text_orig":"EC2"},
         {"id":"Rectangle 14","text_orig":"EC2"}
-      ]
+      ],
+      "resource_label": "AWS_CLOUD_ZONE",
+      "resource_label_conf": 0.95,
+      "resource_category": "ZONE",
+      "resource_label_reason": "AWSというテキストと、サブネット、インターネットゲートウェイ、EC2などの要素が含まれているため。"
     },
     {
       "id": "Rectangle 2",
-      "rect_ltrb": [159.75, 230.25, 584.25, 540.0],
+      "rect_ltrb": [
+        159.75,
+        230.25,
+        584.25,
+        540.0
+      ],
       "text_orig": "10.10.0.0/16",
       "text_source": "TextFrame2.debug",
       "zorder": 2,
@@ -55,11 +74,20 @@
         {"id":"Rectangle 12","text_orig":"EC2"},
         {"id":"Rectangle 13","text_orig":"EC2"},
         {"id":"Rectangle 14","text_orig":"EC2"}
-      ]
+      ],
+      "resource_label": "VPC",
+      "resource_label_conf": 0.8,
+      "resource_category": "NETWORKING",
+      "resource_label_reason": "CIDRブロックであり、サブネット（Public subnet, Private subnet）が含まれているため。"
     },
     {
       "id": "Rectangle 3",
-      "rect_ltrb": [183.0, 259.5, 350.25, 517.5],
+      "rect_ltrb": [
+        183.0,
+        259.5,
+        350.25,
+        517.5
+      ],
       "text_orig": "Availabillty Zone",
       "text_source": "TextFrame2.debug",
       "zorder": 3,
@@ -74,11 +102,20 @@
         {"id":"Rectangle 6","text_orig":"Private subnet"},
         {"id":"Rectangle 11","text_orig":"Nat gateway"},
         {"id":"Rectangle 12","text_orig":"EC2"}
-      ]
+      ],
+      "resource_label": "AVAILABILITY_ZONE",
+      "resource_label_conf": 0.7,
+      "resource_category": "ZONE",
+      "resource_label_reason": "Availability Zoneというテキストが含まれているため。"
     },
     {
       "id": "Rectangle 4",
-      "rect_ltrb": [381.0, 259.5, 548.25, 517.5],
+      "rect_ltrb": [
+        381.0,
+        259.5,
+        548.25,
+        517.5
+      ],
       "text_orig": "Availabillty Zone",
       "text_source": "TextFrame2.debug",
       "zorder": 4,
@@ -93,11 +130,20 @@
         {"id":"Rectangle 8","text_orig":"Private subnet"},
         {"id":"Rectangle 13","text_orig":"EC2"},
         {"id":"Rectangle 14","text_orig":"EC2"}
-      ]
+      ],
+      "resource_label": "AVAILABILITY_ZONE",
+      "resource_label_conf": 0.7,
+      "resource_category": "ZONE",
+      "resource_label_reason": "Availability Zoneというテキストが含まれているため。"
     },
     {
       "id": "Rectangle 5",
-      "rect_ltrb": [196.5, 314.2499084472656, 327.75, 391.4999084472656],
+      "rect_ltrb": [
+        196.5,
+        314.2499084472656,
+        327.75,
+        391.4999084472656
+      ],
       "text_orig": "Public subnet",
       "text_source": "TextFrame2.debug",
       "zorder": 5,
@@ -109,11 +155,20 @@
       "is_picture": false,
       "inside_texts": [
         {"id":"Rectangle 11","text_orig":"Nat gateway"}
-      ]
+      ],
+      "resource_label": "PUBLIC_SUBNET",
+      "resource_label_conf": 0.9,
+      "resource_category": "ZONE",
+      "resource_label_reason": "Public subnetというテキストが含まれているため。"
     },
     {
       "id": "Rectangle 6",
-      "rect_ltrb": [195.75, 409.4999084472656, 327.0, 486.7499084472656],
+      "rect_ltrb": [
+        195.75,
+        409.4999084472656,
+        327.0,
+        486.7499084472656
+      ],
       "text_orig": "Private subnet",
       "text_source": "TextFrame2.debug",
       "zorder": 6,
@@ -125,11 +180,20 @@
       "is_picture": false,
       "inside_texts": [
         {"id":"Rectangle 12","text_orig":"EC2"}
-      ]
+      ],
+      "resource_label": "PRIVATE_SUBNET",
+      "resource_label_conf": 1.0,
+      "resource_category": "ZONE",
+      "resource_label_reason": "プライベートサブネットであるというテキストが含まれているため。"
     },
     {
       "id": "Rectangle 7",
-      "rect_ltrb": [403.5, 313.4999084472656, 534.75, 390.7499084472656],
+      "rect_ltrb": [
+        403.5,
+        313.4999084472656,
+        534.75,
+        390.7499084472656
+      ],
       "text_orig": "Public subnet",
       "text_source": "TextFrame2.debug",
       "zorder": 7,
@@ -141,11 +205,20 @@
       "is_picture": false,
       "inside_texts": [
         {"id":"Rectangle 14","text_orig":"EC2"}
-      ]
+      ],
+      "resource_label": "PUBLIC_SUBNET",
+      "resource_label_conf": 1.0,
+      "resource_category": "ZONE",
+      "resource_label_reason": "パブリックサブネットであるというテキストが含まれているため。"
     },
     {
       "id": "Rectangle 8",
-      "rect_ltrb": [402.75, 408.7499084472656, 534.0, 485.9999084472656],
+      "rect_ltrb": [
+        402.75,
+        408.7499084472656,
+        534.0,
+        485.9999084472656
+      ],
       "text_orig": "Private subnet",
       "text_source": "TextFrame2.debug",
       "zorder": 8,
@@ -157,11 +230,20 @@
       "is_picture": false,
       "inside_texts": [
         {"id":"Rectangle 13","text_orig":"EC2"}
-      ]
+      ],
+      "resource_label": "PRIVATE_SUBNET",
+      "resource_label_conf": 1.0,
+      "resource_category": "ZONE",
+      "resource_label_reason": "プライベートサブネットであるというテキストが含まれているため。"
     },
     {
       "id": "Rectangle 9",
-      "rect_ltrb": [325.5, 163.5, 409.5, 214.40905380249023],
+      "rect_ltrb": [
+        325.5,
+        163.5,
+        409.5,
+        214.40905380249023
+      ],
       "text_orig": "Internet gateway",
       "text_source": "TextFrame2.debug",
       "zorder": 9,
@@ -172,11 +254,20 @@
       ],
       "is_picture": false,
       "inside_texts": [
-      ]
+      ],
+      "resource_label": "IGW",
+      "resource_label_conf": 1.0,
+      "resource_category": "GATEWAY",
+      "resource_label_reason": "インターネットゲートウェイであるというテキストが含まれているため。"
     },
     {
       "id": "Cloud Callout 10",
-      "rect_ltrb": [303.0, 39.0, 432.0, 102.75],
+      "rect_ltrb": [
+        303.0,
+        39.0,
+        432.0,
+        102.75
+      ],
       "text_orig": "InterNet",
       "text_source": "TextFrame2.debug",
       "zorder": 10,
@@ -187,11 +278,20 @@
       ],
       "is_picture": false,
       "inside_texts": [
-      ]
+      ],
+      "resource_label": "INTERNET_ZONE",
+      "resource_label_conf": 1.0,
+      "resource_category": "ZONE",
+      "resource_label_reason": "インターネットを示すテキストが含まれているため。"
     },
     {
       "id": "Rectangle 11",
-      "rect_ltrb": [218.25, 340.5000915527344, 288.75, 381.0000915527344],
+      "rect_ltrb": [
+        218.25,
+        340.5000915527344,
+        288.75,
+        381.0000915527344
+      ],
       "text_orig": "Nat gateway",
       "text_source": "TextFrame2.debug",
       "zorder": 11,
@@ -202,11 +302,20 @@
       ],
       "is_picture": false,
       "inside_texts": [
-      ]
+      ],
+      "resource_label": "NATGW",
+      "resource_label_conf": 1.0,
+      "resource_category": "GATEWAY",
+      "resource_label_reason": "テキストに\"Nat gateway\"が含まれているため。"
     },
     {
       "id": "Rectangle 12",
-      "rect_ltrb": [216.0, 429.7500915527344, 300.0, 480.6591453552246],
+      "rect_ltrb": [
+        216.0,
+        429.7500915527344,
+        300.0,
+        480.6591453552246
+      ],
       "text_orig": "EC2",
       "text_source": "TextFrame2.debug",
       "zorder": 12,
@@ -217,11 +326,20 @@
       ],
       "is_picture": false,
       "inside_texts": [
-      ]
+      ],
+      "resource_label": "EC2",
+      "resource_label_conf": 1.0,
+      "resource_category": "COMPUTE",
+      "resource_label_reason": "テキストに\"EC2\"が含まれているため。"
     },
     {
       "id": "Rectangle 13",
-      "rect_ltrb": [423.75, 429.0000915527344, 507.75, 479.9091453552246],
+      "rect_ltrb": [
+        423.75,
+        429.0000915527344,
+        507.75,
+        479.9091453552246
+      ],
       "text_orig": "EC2",
       "text_source": "TextFrame2.debug",
       "zorder": 13,
@@ -232,11 +350,20 @@
       ],
       "is_picture": false,
       "inside_texts": [
-      ]
+      ],
+      "resource_label": "EC2",
+      "resource_label_conf": 1.0,
+      "resource_category": "COMPUTE",
+      "resource_label_reason": "テキストに\"EC2\"が含まれているため。"
     },
     {
       "id": "Rectangle 14",
-      "rect_ltrb": [422.25, 334.5000915527344, 506.25, 385.4091453552246],
+      "rect_ltrb": [
+        422.25,
+        334.5000915527344,
+        506.25,
+        385.4091453552246
+      ],
       "text_orig": "EC2",
       "text_source": "TextFrame2.debug",
       "zorder": 14,
@@ -247,11 +374,20 @@
       ],
       "is_picture": false,
       "inside_texts": [
-      ]
+      ],
+      "resource_label": "EC2",
+      "resource_label_conf": 1.0,
+      "resource_category": "COMPUTE",
+      "resource_label_reason": "テキストに\"EC2\"が含まれているため。"
     },
     {
       "id": "Straight Connector 16",
-      "rect_ltrb": [288.75, 359.95465087890625, 422.25, 360.75008392333984],
+      "rect_ltrb": [
+        288.75,
+        359.95465087890625,
+        422.25,
+        360.75008392333984
+      ],
       "text_orig": "",
       "text_source": "",
       "zorder": 15,
@@ -274,7 +410,12 @@
     },
     {
       "id": "Straight Connector 17",
-      "rect_ltrb": [288.75, 360.7500915527344, 423.75, 454.4546585083008],
+      "rect_ltrb": [
+        288.75,
+        360.7500915527344,
+        423.75,
+        454.4546585083008
+      ],
       "text_orig": "",
       "text_source": "",
       "zorder": 16,
@@ -297,7 +438,12 @@
     },
     {
       "id": "Straight Connector 20",
-      "rect_ltrb": [253.5, 381.0000915527344, 258.0, 429.7500915527344],
+      "rect_ltrb": [
+        253.5,
+        381.0000915527344,
+        258.0,
+        429.7500915527344
+      ],
       "text_orig": "",
       "text_source": "",
       "zorder": 17,
@@ -320,7 +466,12 @@
     },
     {
       "id": "Straight Connector 24",
-      "rect_ltrb": [366.0, 214.4090576171875, 367.5, 360.75],
+      "rect_ltrb": [
+        366.0,
+        214.4090576171875,
+        367.5,
+        360.75
+      ],
       "text_orig": "",
       "text_source": "",
       "zorder": 18,
@@ -343,7 +494,12 @@
     },
     {
       "id": "Straight Connector 25",
-      "rect_ltrb": [367.5, 102.68212890625, 367.5, 163.50000381469727],
+      "rect_ltrb": [
+        367.5,
+        102.68212890625,
+        367.5,
+        163.50000381469727
+      ],
       "text_orig": "",
       "text_source": "",
       "zorder": 19,
