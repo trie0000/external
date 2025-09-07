@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "workbook": "input.xlsx",
+    "sheet": "Sheet2",
+    "unit": "pt",
+    "shape_count": 7
+  },
+  "zones_raw": [
+    {
+      "id": "Rectangle 5",
+      "rect": [
+        150.0000762939453,
+        104.25,
+        463.5000762939453,
+        370.5
+      ],
+      "area": 83469.375,
+      "inside": 4
+    },
+    {
+      "id": "Rectangle 1",
+      "rect": [
+        173.25,
+        158.25,
+        451.5,
+        358.5
+      ],
+      "area": 55719.5625,
+      "inside": 2
+    }
+  ],
+  "zones": [
+    {
+      "zone_id": "Rectangle 5",
+      "zone_rect": [
+        150.0000762939453,
+        104.25,
+        463.5000762939453,
+        370.5
+      ],
+      "label_raw": "AWSクラウド",
+      "normalized": "cloud_aws",
+      "score": 1.8
+    },
+    {
+      "zone_id": "Rectangle 1",
+      "zone_rect": [
+        173.25,
+        158.25,
+        451.5,
+        358.5
+      ],
+      "label_raw": "VPC",
+      "normalized": "vpc",
+      "score": 1.8
+    }
+  ],
+  "zone_relations": {
+    "hierarchy": {
+      "Rectangle 5": {
+        "parent": null,
+        "children": [
+          "Rectangle 1"
+        ],
+        "depth": 0
+      },
+      "Rectangle 1": {
+        "parent": "Rectangle 5",
+        "children": [],
+        "depth": 1
+      }
+    },
+    "overlaps": [
+      [
+        "Rectangle 5",
+        "Rectangle 1"
+      ]
+    ],
+    "adjacency": []
+  },
+  "assignments": [
+    {
+      "node_id": "Rectangle 2",
+      "zone_id": "Rectangle 1",
+      "zone_normalized": "vpc",
+      "confidence": "high",
+      "overlap": 1.0,
+      "text_raw": "Webサーバ1",
+      "text_source": "TextFrame2.debug",
+      "effective_text": "Webサーバ1",
+      "inside_texts": []
+    },
+    {
+      "node_id": "Rectangle 3",
+      "zone_id": "Rectangle 5",
+      "zone_normalized": "cloud_aws",
+      "confidence": "high",
+      "overlap": 1.0,
+      "text_raw": "インターネットGW",
+      "text_source": "TextFrame2.debug",
+      "effective_text": "インターネットGW",
+      "inside_texts": []
+    },
+    {
+      "node_id": "Rectangle 4",
+      "zone_id": "zone_internet",
+      "zone_normalized": "internet",
+      "confidence": "high",
+      "overlap": 0.0,
+      "note": "auto-reassigned-to-internet",
+      "text_raw": "ユーザ",
+      "text_source": "TextFrame2.debug",
+      "effective_text": "ユーザ",
+      "inside_texts": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "Straight Arrow Connector 6",
+      "src": "Rectangle 4",
+      "dst": "Rectangle 3",
+      "dir_hint": "src_to_dst",
+      "confidence": "high",
+      "kind": "connector",
+      "protocol": "unknown",
+      "protocol_raw": "",
+      "src_zone": "zone_internet",
+      "dst_zone": "Rectangle 5"
+    },
+    {
+      "id": "Straight Arrow Connector 9",
+      "src": "Rectangle 3",
+      "dst": "Rectangle 2",
+      "dir_hint": "src_to_dst",
+      "confidence": "high",
+      "kind": "connector",
+      "protocol": "unknown",
+      "protocol_raw": "",
+      "src_zone": "Rectangle 5",
+      "dst_zone": "Rectangle 1"
+    }
+  ],
+  "cross_zone_edges": [
+    {
+      "edge_id": "Straight Arrow Connector 6",
+      "src_node": "Rectangle 4",
+      "dst_node": "Rectangle 3",
+      "src_zone": "zone_internet",
+      "dst_zone": "Rectangle 5",
+      "protocol": "unknown",
+      "protocol_raw": ""
+    },
+    {
+      "edge_id": "Straight Arrow Connector 9",
+      "src_node": "Rectangle 3",
+      "dst_node": "Rectangle 2",
+      "src_zone": "Rectangle 5",
+      "dst_zone": "Rectangle 1",
+      "protocol": "unknown",
+      "protocol_raw": ""
+    }
+  ]
+}
