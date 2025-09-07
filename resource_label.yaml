@@ -1,0 +1,537 @@
+version: 1
+policy:
+  label_style: "UPPER_SNAKE_OR_ABBREV"      # ラベル記法
+  language: "ja"
+  fallback_label: "UNKNOWN"
+  notes:
+    - "label は資産台帳・図内の統一名。synonyms は入力の表記ゆれ吸収用。"
+    - "vendors は各クラウド/製品での対応関係を示すメタデータ（任意）。"
+
+categories:
+  - ZONE
+  - NETWORKING
+  - GATEWAY
+  - CONNECTIVITY
+  - SECURITY_CONTROL
+  - FIREWALL_WAF
+  - LOAD_BALANCER
+  - NAME_RESOLUTION
+  - EDGE_CDN
+  - IDP_ACCESS
+  - OBSERVABILITY
+  - COMPUTE
+  - CONTAINER
+  - SERVERLESS
+  - STORAGE
+  - DATABASE
+  - CACHE
+  - MESSAGE_QUEUE
+  - STREAMING
+  - API_GATEWAY
+  - INTEGRATION
+  - ANALYTICS
+  - DATA_WAREHOUSE
+  - DATA_LAKE
+  - ETL_ELT
+  - WORKFLOW
+  - DEVOPS
+  - SECRETS
+  - SEARCH
+  - EMAIL_SMS
+  - SAAS                    # SaaS全般カテゴリ
+  - SAAS_SECURITY          # SaaSのセキュリティ領域
+  - SAAS_BUSINESS          # SaaSの業務アプリ領域
+
+vocabulary:
+
+  # ---------- Network / Zone ----------
+  - label: DMZ
+    category: ZONE
+    description: 公開向けシステムを配置する境界ネットワーク領域
+    synonyms: ["公開ゾーン", "perimeter network", "demilitarized zone"]
+    vendors: { aws: {}, azure: {}, gcp: {} }
+
+  - label: PRIVATE_ZONE
+    category: ZONE
+    description: インターネット非公開の内部ネットワーク領域
+    synonyms: ["内部ゾーン", "プライベートゾーン"]
+    vendors: { aws: {}, azure: {}, gcp: {} }
+
+  - label: VPC
+    category: NETWORKING
+    description: AWSの仮想ネットワーク
+    synonyms: ["仮想ネットワーク(AWS)"]
+    vendors: { aws: { service: "Amazon VPC", resource_types: ["VPC","Subnet","ENI"] }, azure: {}, gcp: {} }
+
+  - label: VNET
+    category: NETWORKING
+    description: Azureの仮想ネットワーク
+    synonyms: ["Virtual Network", "仮想ネットワーク(Azure)"]
+    vendors: { aws: {}, azure: { service: "Azure Virtual Network", resource_types: ["VirtualNetwork","Subnet","NIC"] }, gcp: {} }
+
+  - label: VPC_NETWORK
+    category: NETWORKING
+    description: GCPの仮想ネットワーク
+    synonyms: ["VPC (GCP)", "VPC Network"]
+    vendors: { aws: {}, azure: {}, gcp: { service: "Google Cloud VPC", resource_types: ["Network","Subnet"] } }
+
+  - label: IGW
+    category: GATEWAY
+    description: インターネットゲートウェイ
+    synonyms: ["internetGW", "Internet Gateway", "インターネットGW"]
+    vendors: { aws: { service: "Amazon VPC", resource_types: ["InternetGateway"] }, azure: {}, gcp: {} }
+
+  - label: NATGW
+    category: GATEWAY
+    description: NATゲートウェイ（アウトバウンドのみ）
+    synonyms: ["NAT Gateway","nat gw","NAT-GW","Cloud NAT"]
+    vendors:
+      aws: { service: "Amazon VPC", resource_types: ["NatGateway"] }
+      azure: { service: "Azure Virtual Network", resource_types: ["NAT Gateway"] }
+      gcp: { service: "Cloud NAT", resource_types: ["NAT"] }
+
+  - label: TRANSIT_GATEWAY
+    category: GATEWAY
+    description: マルチVPC/VNetのハブ接続
+    synonyms: ["TGW","Transit GW","vWAN Hub"]
+    vendors:
+      aws: { service: "AWS Transit Gateway", resource_types: ["TransitGateway","Attachment"] }
+      azure: { service: "Azure Virtual WAN", resource_types: ["Hub"] }
+      gcp: { service: "Cloud Router/HA VPN Hub", resource_types: ["Cloud Router"] }
+
+  - label: VPN_GATEWAY
+    category: CONNECTIVITY
+    description: オンプレ-クラウド間VPN
+    synonyms: ["VGW","Site-to-Site VPN","Cloud VPN"]
+    vendors:
+      aws: { service: "Amazon VPC", resource_types: ["VpnGateway","CustomerGateway","VpnConnection"] }
+      azure: { service: "Azure VPN Gateway", resource_types: ["VpnGateway","Connection"] }
+      gcp: { service: "Cloud VPN", resource_types: ["VPN Gateway","Tunnel"] }
+
+  - label: DIRECT_CONNECT
+    category: CONNECTIVITY
+    description: 専用線/閉域接続（DX/ExpressRoute/Interconnect）
+    synonyms: ["DX","ExpressRoute","Interconnect","専用線"]
+    vendors:
+      aws: { service: "AWS Direct Connect", resource_types: ["Connection","VIF"] }
+      azure: { service: "Azure ExpressRoute", resource_types: ["Circuit","Gateway"] }
+      gcp: { service: "Cloud Interconnect", resource_types: ["Interconnect","VLAN Attachment"] }
+
+  - label: VPC_PEERING
+    category: CONNECTIVITY
+    description: 仮想ネットワーク間ピアリング
+    synonyms: ["VPCピアリング","VNet Peering","VPC Network Peering"]
+    vendors:
+      aws: { service: "Amazon VPC", resource_types: ["VpcPeeringConnection"] }
+      azure: { service: "Azure Virtual Network", resource_types: ["VNet Peering"] }
+      gcp: { service: "VPC Network Peering", resource_types: ["Peering"] }
+
+  - label: PRIVATE_LINK_ENDPOINT
+    category: CONNECTIVITY
+    description: プライベート接続（PrivateLink/Private Endpoint/PSC）
+    synonyms: ["PrivateLink","Private Endpoint","Private Service Connect"]
+    vendors:
+      aws: { service: "AWS PrivateLink", resource_types: ["InterfaceEndpoint","EndpointService"] }
+      azure: { service: "Azure Private Link", resource_types: ["Private Endpoint","Private Link Service"] }
+      gcp: { service: "Private Service Connect", resource_types: ["PSC Endpoint","Service Attachment"] }
+
+  - label: SECURITY_GROUP
+    category: SECURITY_CONTROL
+    description: インスタンス単位のステートフル仮想FW
+    synonyms: ["SG","セキュリティグループ(AWS)"]
+    vendors: { aws: { service: "Amazon VPC", resource_types: ["SecurityGroup"] }, azure: {}, gcp: {} }
+
+  - label: NACL
+    category: SECURITY_CONTROL
+    description: サブネット境界のステートレスACL
+    synonyms: ["Network ACL","サブネットACL"]
+    vendors: { aws: { service: "Amazon VPC", resource_types: ["NetworkAcl"] }, azure: {}, gcp: {} }
+
+  - label: NSG
+    category: SECURITY_CONTROL
+    description: Azureのネットワークセキュリティグループ
+    synonyms: ["Network Security Group"]
+    vendors: { aws: {}, azure: { service: "Azure Virtual Network", resource_types: ["NetworkSecurityGroup"] }, gcp: {} }
+
+  - label: NETWORK_FIREWALL
+    category: FIREWALL_WAF
+    description: マネージドFW（L3–L7）
+    synonyms: ["AWS Network Firewall","Azure Firewall","Cloud Firewall"]
+    vendors:
+      aws: { service: "AWS Network Firewall", resource_types: ["Firewall","Policy"] }
+      azure: { service: "Azure Firewall", resource_types: ["Firewall","Policy"] }
+      gcp: { service: "Cloud Firewall", resource_types: ["Firewall Policy"] }
+
+  - label: WAF
+    category: FIREWALL_WAF
+    description: Webアプリ層の防御
+    synonyms: ["Web Application Firewall","Cloud Armor (GCP)"]
+    vendors:
+      aws: { service: "AWS WAF", resource_types: ["WebACL","RuleGroup"] }
+      azure: { service: "Azure WAF (AppGW/Front Door)", resource_types: ["WAF Policy"] }
+      gcp: { service: "Cloud Armor", resource_types: ["Security Policy"] }
+
+  - label: ALB
+    category: LOAD_BALANCER
+    description: L7アプリケーションLB
+    synonyms: ["Application Load Balancer","HTTP(S) LB"]
+    vendors:
+      aws: { service: "Elastic Load Balancing", resource_types: ["LoadBalancer","TargetGroup","Listener"] }
+      azure: { service: "Azure Application Gateway", resource_types: ["Application Gateway"] }
+      gcp: { service: "HTTP(S) Load Balancing", resource_types: ["URL Map","Backend Service"] }
+
+  - label: NLB
+    category: LOAD_BALANCER
+    description: L4ネットワークLB
+    synonyms: ["Network Load Balancer","TCP/UDP LB"]
+    vendors:
+      aws: { service: "Elastic Load Balancing", resource_types: ["LoadBalancer","TargetGroup","Listener"] }
+      azure: { service: "Azure Load Balancer", resource_types: ["LoadBalancer"] }
+      gcp: { service: "TCP/UDP Load Balancing", resource_types: ["Backend Service"] }
+
+  - label: DNS
+    category: NAME_RESOLUTION
+    description: 名前解決（パブリック/プライベート）
+    synonyms: ["ネームサーバ","ホストゾーン","レコード"]
+    vendors:
+      aws: { service: "Amazon Route 53", resource_types: ["HostedZone","RecordSet"] }
+      azure: { service: "Azure DNS", resource_types: ["DNS Zone","Record Set"] }
+      gcp: { service: "Cloud DNS", resource_types: ["Managed Zone","Record Set"] }
+
+  - label: CDN
+    category: EDGE_CDN
+    description: コンテンツ配信ネットワーク
+    synonyms: ["CloudFront","Front Door","Cloud CDN"]
+    vendors:
+      aws: { service: "Amazon CloudFront", resource_types: ["Distribution"] }
+      azure: { service: "Azure Front Door / Azure CDN", resource_types: ["Front Door","Profile"] }
+      gcp: { service: "Cloud CDN", resource_types: ["CDN Policy"] }
+
+  - label: IAM_IDENTITY
+    category: IDP_ACCESS
+    description: 身元・権限管理（認証/認可/RBAC）
+    synonyms: ["IAM","Entra ID","Cloud IAM"]
+    vendors:
+      aws: { service: "AWS IAM", resource_types: ["User","Role","Policy"] }
+      azure: { service: "Microsoft Entra ID", resource_types: ["User","App Registration","Role Assignment"] }
+      gcp: { service: "Cloud IAM", resource_types: ["Service Account","Role","Policy"] }
+
+  - label: MONITORING
+    category: OBSERVABILITY
+    description: メトリクス/ログ/アラート/トレース
+    synonyms: ["CloudWatch","Azure Monitor","Cloud Monitoring","Logging","APM"]
+    vendors:
+      aws: { service: "CloudWatch / X-Ray", resource_types: ["Metric","LogGroup","Alarm","Trace"] }
+      azure: { service: "Azure Monitor", resource_types: ["Log Analytics","Metric","Alert"] }
+      gcp: { service: "Cloud Monitoring / Logging", resource_types: ["Metric","Log","Alert"] }
+
+  # ---------- Compute / Container / Serverless ----------
+  - label: EC2
+    category: COMPUTE
+    description: AWSの仮想サーバインスタンス
+    synonyms: ["Elastic Compute Cloud","インスタンス","仮想サーバ"]
+    vendors: { aws: { service: "Amazon EC2", resource_types: ["Instance","AMI","EBS"] }, azure: {}, gcp: {} }
+
+  - label: COMPUTE_ENGINE
+    category: COMPUTE
+    description: GCPの仮想マシン
+    synonyms: ["GCE","VM (GCP)"]
+    vendors: { aws: {}, azure: {}, gcp: { service: "Compute Engine", resource_types: ["Instance","Disk"] } }
+
+  - label: CONTAINER_SERVICE
+    category: CONTAINER
+    description: コンテナ基盤（ECS/EKS/AKS/GKE）
+    synonyms: ["Kubernetes","ECS","EKS","AKS","GKE"]
+    vendors:
+      aws: { service: "ECS / EKS", resource_types: ["Cluster","Task","Pod"] }
+      azure: { service: "Azure Kubernetes Service", resource_types: ["Cluster","Pod"] }
+      gcp: { service: "GKE", resource_types: ["Cluster","Pod"] }
+
+  - label: LAMBDA
+    category: SERVERLESS
+    description: サーバーレス実行環境
+    synonyms: ["関数","Function","Cloud Functions","Cloud Run"]
+    vendors:
+      aws: { service: "AWS Lambda", resource_types: ["Function","Layer","Alias"] }
+      azure: { service: "Azure Functions", resource_types: ["Function App"] }
+      gcp: { service: "Cloud Functions / Cloud Run", resource_types: ["Function","Service"] }
+
+  # ---------- Storage ----------
+  - label: OBJECT_STORAGE
+    category: STORAGE
+    description: オブジェクトストレージ
+    synonyms: ["S3","Blob","Cloud Storage","バケット"]
+    vendors:
+      aws: { service: "Amazon S3", resource_types: ["Bucket"] }
+      azure: { service: "Azure Storage", resource_types: ["Blob Container"] }
+      gcp: { service: "Cloud Storage", resource_types: ["Bucket"] }
+
+  - label: FILE_STORAGE
+    category: STORAGE
+    description: マネージドファイル共有
+    synonyms: ["EFS","FSx","Azure Files","Filestore"]
+    vendors:
+      aws: { service: "EFS / FSx", resource_types: ["FileSystem","FSx"] }
+      azure: { service: "Azure Files", resource_types: ["File Share"] }
+      gcp: { service: "Filestore", resource_types: ["Instance"] }
+
+  - label: BLOCK_STORAGE
+    category: STORAGE
+    description: ブロックストレージ（VMディスク）
+    synonyms: ["EBS","Managed Disk","Persistent Disk"]
+    vendors:
+      aws: { service: "Amazon EBS", resource_types: ["Volume","Snapshot"] }
+      azure: { service: "Managed Disks", resource_types: ["Disk","Snapshot"] }
+      gcp: { service: "Persistent Disk", resource_types: ["Disk","Snapshot"] }
+
+  # ---------- Data (DB/Cache/Search) ----------
+  - label: RDS
+    category: DATABASE
+    description: マネージドRDB
+    synonyms: ["Amazon RDS","Azure SQL","Cloud SQL","Postgres","MySQL"]
+    vendors:
+      aws: { service: "Amazon RDS", resource_types: ["DBInstance","DBCluster"] }
+      azure: { service: "Azure SQL/MySQL/PostgreSQL", resource_types: ["Server/DB"] }
+      gcp: { service: "Cloud SQL / AlloyDB", resource_types: ["Instance","Cluster"] }
+
+  - label: DYNAMODB
+    category: DATABASE
+    description: フルマネージドNoSQL
+    synonyms: ["Dynamo","Cosmos DB","Bigtable","Firestore","NoSQL"]
+    vendors:
+      aws: { service: "Amazon DynamoDB", resource_types: ["Table","Index"] }
+      azure: { service: "Azure Cosmos DB", resource_types: ["Account","Container"] }
+      gcp: { service: "Bigtable / Firestore", resource_types: ["Instance","Table","Collection"] }
+
+  - label: CACHE
+    category: CACHE
+    description: 分散キャッシュ/インメモリ
+    synonyms: ["ElastiCache","Redis","Memcached","Azure Cache for Redis","MemoryStore"]
+    vendors:
+      aws: { service: "Amazon ElastiCache", resource_types: ["Cluster"] }
+      azure: { service: "Azure Cache for Redis", resource_types: ["Cache"] }
+      gcp: { service: "MemoryStore (Redis/Memcached)", resource_types: ["Instance"] }
+
+  - label: SEARCH
+    category: SEARCH
+    description: 検索/全文検索
+    synonyms: ["OpenSearch","Elasticsearch","Cognitive Search"]
+    vendors:
+      aws: { service: "Amazon OpenSearch Service", resource_types: ["Domain"] }
+      azure: { service: "Azure AI Search", resource_types: ["Search Service"] }
+      gcp: { service: "Elastic on GCP", resource_types: [] }
+
+  # ---------- Messaging / Streaming / Integration ----------
+  - label: SQS
+    category: MESSAGE_QUEUE
+    description: メッセージキュー
+    synonyms: ["Queue","Amazon SQS","Service Bus Queue"]
+    vendors:
+      aws: { service: "Amazon SQS", resource_types: ["Queue"] }
+      azure: { service: "Azure Service Bus", resource_types: ["Queue"] }
+      gcp: { service: "Pub/Sub (Pull)", resource_types: ["Subscription"] }
+
+  - label: SNS
+    category: MESSAGE_QUEUE
+    description: Pub/Sub通知
+    synonyms: ["Topic","通知","Amazon SNS","Event Grid"]
+    vendors:
+      aws: { service: "Amazon SNS", resource_types: ["Topic","Subscription"] }
+      azure: { service: "Azure Event Grid", resource_types: ["Topic","Event Subscription"] }
+      gcp: { service: "Pub/Sub", resource_types: ["Topic","Subscription"] }
+
+  - label: STREAMING
+    category: STREAMING
+    description: ストリーム処理/イベント基盤
+    synonyms: ["Kinesis","Event Hubs","Dataflow","Kafka"]
+    vendors:
+      aws: { service: "Amazon Kinesis", resource_types: ["Data Streams","Firehose"] }
+      azure: { service: "Azure Event Hubs", resource_types: ["Event Hub"] }
+      gcp: { service: "Cloud Dataflow / Pub/Sub", resource_types: ["Pipeline","Topic"] }
+
+  - label: API_GATEWAY
+    category: API_GATEWAY
+    description: API公開・管理
+    synonyms: ["Amazon API Gateway","Azure APIM","Apigee","API Management"]
+    vendors:
+      aws: { service: "Amazon API Gateway", resource_types: ["RestApi","Stage"] }
+      azure: { service: "Azure API Management", resource_types: ["API","Policy"] }
+      gcp: { service: "Apigee / API Gateway", resource_types: ["API Proxy","Gateway"] }
+
+  - label: INTEGRATION
+    category: INTEGRATION
+    description: 連携/統合/オーケストレーション
+    synonyms: ["Glue","Data Factory","Workflows","Step Functions","Data Fusion"]
+    vendors:
+      aws: { service: "AWS Glue / Step Functions", resource_types: ["Crawler","Job","StateMachine"] }
+      azure: { service: "Azure Data Factory / Synapse Pipelines", resource_types: ["Pipeline"] }
+      gcp: { service: "Cloud Workflows / Data Fusion", resource_types: ["Workflow","Pipeline"] }
+
+  # ---------- Analytics / DWH / Lake ----------
+  - label: ANALYTICS
+    category: ANALYTICS
+    description: BI/可視化/対話型分析
+    synonyms: ["QuickSight","Power BI","Looker","Looker Studio"]
+    vendors:
+      aws: { service: "Amazon QuickSight", resource_types: [] }
+      azure: { service: "Power BI", resource_types: [] }
+      gcp: { service: "Looker / Looker Studio", resource_types: [] }
+
+  - label: DATA_WAREHOUSE
+    category: DATA_WAREHOUSE
+    description: DWH/列指向分析
+    synonyms: ["Redshift","Synapse Dedicated SQL","BigQuery"]
+    vendors:
+      aws: { service: "Amazon Redshift", resource_types: ["Cluster"] }
+      azure: { service: "Azure Synapse Analytics", resource_types: ["SQL Pool"] }
+      gcp: { service: "BigQuery", resource_types: ["Dataset","Table"] }
+
+  - label: DATA_LAKE
+    category: DATA_LAKE
+    description: データレイク/メタデータ管理
+    synonyms: ["Lake Formation","ADLS","Dataplex"]
+    vendors:
+      aws: { service: "AWS Lake Formation", resource_types: ["Data Lake","Permissions"] }
+      azure: { service: "Azure Data Lake Storage", resource_types: ["ADLS Gen2"] }
+      gcp: { service: "Dataplex", resource_types: ["Lake","Zone"] }
+
+  - label: ETL_ELT
+    category: ETL_ELT
+    description: データ変換/取り込み
+    synonyms: ["Glue ETL","Dataflow","ADF Mapping Data Flow","Dataproc","EMR","Databricks"]
+    vendors:
+      aws: { service: "AWS Glue / EMR", resource_types: ["Job","Cluster"] }
+      azure: { service: "Azure Data Factory / Databricks", resource_types: ["Pipeline","Job"] }
+      gcp: { service: "Cloud Dataflow / Dataproc", resource_types: ["Job","Cluster"] }
+
+  # ---------- Workflow / DevOps / Secrets / Email ----------
+  - label: WORKFLOW
+    category: WORKFLOW
+    description: サービス間の実行フロー制御
+    synonyms: ["Step Functions","Logic Apps","Cloud Workflows"]
+    vendors:
+      aws: { service: "AWS Step Functions", resource_types: ["StateMachine"] }
+      azure: { service: "Azure Logic Apps", resource_types: ["Workflow"] }
+      gcp: { service: "Cloud Workflows", resource_types: ["Workflow"] }
+
+  - label: DEVOPS
+    category: DEVOPS
+    description: CI/CD・ソース管理
+    synonyms: ["CodePipeline","CodeBuild","GitHub Actions","Azure DevOps","Cloud Build","Cloud Deploy"]
+    vendors:
+      aws: { service: "CodePipeline/CodeBuild/CodeDeploy", resource_types: ["Pipeline","Build","Deploy"] }
+      azure: { service: "Azure DevOps", resource_types: ["Pipeline"] }
+      gcp: { service: "Cloud Build / Cloud Deploy", resource_types: ["Trigger","Delivery Pipeline"] }
+
+  - label: SECRETS
+    category: SECRETS
+    description: シークレット/鍵管理
+    synonyms: ["Secrets Manager","Key Vault","Secret Manager","KMS","Cloud KMS"]
+    vendors:
+      aws: { service: "Secrets Manager / KMS", resource_types: ["Secret","Key"] }
+      azure: { service: "Azure Key Vault", resource_types: ["Vault","Secret","Key"] }
+      gcp: { service: "Secret Manager / Cloud KMS", resource_types: ["Secret","KeyRing","Key"] }
+
+  - label: EMAIL_SMS
+    category: EMAIL_SMS
+    description: メール/短信配信
+    synonyms: ["SES","SendGrid","Exchange Online","Gmail","Twilio","Azure Communication Services"]
+    vendors:
+      aws: { service: "Amazon SES / SNS", resource_types: ["Identity","ConfigurationSet"] }
+      azure: { service: "Azure Communication Services", resource_types: ["Email","SMS"] }
+      gcp: {}
+
+  # ---------- SaaS（業務・コラボ・運用） ----------
+  - label: OFFICE_SUITE
+    category: SAAS
+    description: オフィススイート（文書・表計算・プレゼン）
+    synonyms: ["Microsoft 365","Google Workspace","Office Online","Docs","Sheets","Slides","Word","Excel","PowerPoint"]
+    vendors:
+      azure: { service: "Microsoft 365", resource_types: ["Word","Excel","PowerPoint","Outlook"] }
+      gcp: { service: "Google Workspace", resource_types: ["Docs","Sheets","Slides","Gmail"] }
+
+  - label: COLLABORATION
+    category: SAAS
+    description: チームコラボ/チャット/会議
+    synonyms: ["Slack","Microsoft Teams","Zoom","Webex","Google Chat/Meet"]
+    vendors:
+      azure: { service: "Microsoft Teams", resource_types: ["Team","Channel","Meeting"] }
+      gcp: { service: "Google Meet / Chat", resource_types: ["Room","Thread","Meeting"] }
+
+  - label: FILE_COLLAB_STORAGE
+    category: SAAS
+    description: クラウドファイル共有
+    synonyms: ["OneDrive","Google Drive","Box","Dropbox"]
+    vendors:
+      azure: { service: "OneDrive", resource_types: ["Drive","Item"] }
+      gcp: { service: "Google Drive", resource_types: ["Drive","File","Folder"] }
+
+  - label: COMMUNICATION_SAAS
+    category: SAAS
+    description: メール/通話/メッセージング（SaaS）
+    synonyms: ["Exchange Online","Gmail","Zoom Phone","Twilio","RingCentral"]
+    vendors:
+      azure: { service: "Exchange Online", resource_types: ["Mailbox","Calendar"] }
+      gcp: { service: "Gmail", resource_types: ["Mailbox"] }
+
+  - label: IDENTITY_SAAS
+    category: SAAS_SECURITY
+    description: IDaaS/SSO/MFA
+    synonyms: ["Okta","Auth0","Ping Identity","OneLogin","Entra ID (外販)"]
+    vendors:
+      azure: { service: "Microsoft Entra ID", resource_types: ["User","App Registration"] }
+
+  - label: MDM_UEM
+    category: SAAS_SECURITY
+    description: デバイス管理（MDM/UEM）
+    synonyms: ["Intune","Jamf","AirWatch","Workspace ONE","Endpoint Manager"]
+    vendors:
+      azure: { service: "Microsoft Intune", resource_types: ["Device","Policy","App"] }
+
+  - label: EDR_SAAS
+    category: SAAS_SECURITY
+    description: エンドポイント防御/検知（EDR）
+    synonyms: ["CrowdStrike","SentinelOne","Defender for Endpoint","Trend Micro"]
+    vendors:
+      azure: { service: "Microsoft Defender for Endpoint", resource_types: ["Device","Alert"] }
+
+  - label: CASB_SASE
+    category: SAAS_SECURITY
+    description: CASB/SASE/ゼロトラストアクセス
+    synonyms: ["Zscaler","Netskope","Prisma Access","Defender for Cloud Apps"]
+    vendors:
+      azure: { service: "Defender for Cloud Apps", resource_types: ["App Discovery","Policy"] }
+
+  - label: CRM
+    category: SAAS_BUSINESS
+    description: 顧客関係管理
+    synonyms: ["Salesforce","Dynamics 365 CRM","HubSpot CRM","Zoho CRM"]
+    vendors:
+      azure: { service: "Dynamics 365", resource_types: ["Lead","Contact","Opportunity"] }
+
+  - label: ERP
+    category: SAAS_BUSINESS
+    description: 基幹業務（会計/人事/調達）
+    synonyms: ["SAP S/4HANA Cloud","Oracle NetSuite","Dynamics 365 ERP"]
+    vendors:
+      azure: { service: "Dynamics 365 Finance / Supply Chain", resource_types: ["Module"] }
+
+  - label: ITSM
+    category: SAAS_BUSINESS
+    description: ITサービス管理/ワークフロー
+    synonyms: ["ServiceNow","Jira Service Management","Freshservice","BMC Helix"]
+    vendors: {}
+
+  - label: TICKETING
+    category: SAAS_BUSINESS
+    description: 問い合わせ/サポートチケット
+    synonyms: ["Zendesk","Freshdesk","Intercom"]
+    vendors: {}
+
+  - label: DEVOPS_SAAS
+    category: SAAS
+    description: SaaS型開発・運用プラットフォーム
+    synonyms: ["GitHub","GitLab","Bitbucket Cloud","CircleCI"]
+    vendors:
+      azure: { service: "GitHub (Microsoft)", resource_types: ["Repository","Actions"] }
+
