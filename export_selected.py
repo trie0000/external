@@ -3,7 +3,7 @@
 export_selected.py
 選択範囲と交差する図形を JSON 化（図形テキスト取得強化 + デバッグ）
 使い方:
-    python export_selected.py --out C:\tmp\diagram.json [--debug]
+    python export_selected.py --out ./diagram.json [--debug]
 """
 import argparse
 import json

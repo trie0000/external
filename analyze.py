@@ -20,39 +20,53 @@ from typing import List, Dict, Any, Tuple, Set
 
 MSO_TEXTBOX = 17
 
-# ===== 正規化パターン（補助用） =====
+# 追加（共通ユーティリティ）
+ASCII_WORD = r"[A-Za-z0-9]"
+def word(term: str) -> str:
+    # 大文字小文字無視 + ASCII英数字に対する前後境界
+    return rf"(?i)(?<!{ASCII_WORD}){term}(?!{ASCII_WORD})"
+
+# ===== ゾーン正規化パターン =====
 ZONE_PATTERNS = {
     "dmz": [
-        r"(?i)\bdmz\b",
+        word("dmz"),
         r"(?i)d\s*m\s*z",
         r"ＤＭＺ",
         r"dmz\s*ゾーン", r"dmz\s*zone",
         r"公開(?:ゾーン|セグメント|領域)?",
-        r"(?i)\binternet\b", r"インターネット",
-        r"demilitarized"
+        word("internet"), r"インターネット",
+        r"demilitarized",
     ],
-    "internal": [r"(?i)\binternal\b", r"社内", r"業務", r"内部", r"イントラネット"],
-    "external": [r"(?i)\bexternal\b", r"社外", r"外部", r"(?i)\binternet\b", r"インターネット"],
-    "management": [r"(?i)\bmgmt\b|management", r"運用", r"管理(?:ゾーン|ネットワーク|seg|セグメント)?"],
-    "vpc": [r"(?i)\bvpc\b", r"vpcネットワーク", r"vpc\s*network", r"サブネット", r"subnet"],
-    "cloud_aws": [r"(?i)\baws\b", r"(?i)aws\s*cloud", r"アマゾン|アマゾンウェブ|(?i)awsクラウド", r"(?i)amazon\s*web\s*services"]
+    "internal": [word("internal"), r"社内", r"業務", r"内部", r"イントラネット"],
+    "external": [word("external"), r"社外", r"外部", word("internet"), r"インターネット"],
+    "management": [word("mgmt"), word("management"), r"運用", r"管理(?:ゾーン|ネットワーク|seg|セグメント)?"],
+    "vpc": [word("vpc"), r"vpcネットワーク", r"vpc\s*network", r"サブネット", r"subnet"],
+    "cloud_aws": [
+        word("aws"), r"(?i)aws\s*cloud",
+        r"アマゾン|アマゾンウェブ|(?i)awsクラウド",
+        r"(?i)amazon\s*web\s*services",
+    ],
 }
+
+# ===== 役割パターン =====
 ROLE_PATTERNS = {
-    "web": [r"(?i)\bweb\b", r"Webサーバ", r"リバースプロキシ", r"proxy", r"nginx", r"httpd", r"alb", r"elb", r"waf"],
-    "app": [r"(?i)\bapp\b", r"\bap\b", r"アプリ", r"application", r"tomcat", r"was", r"backend"],
-    "db" : [r"(?i)\bdb\b",  r"DBサーバ", r"データベース", r"mysql", r"postgres", r"oracle", r"rds"],
+    "web": [word("web"), r"Webサーバ", r"リバースプロキシ", r"proxy", r"nginx", r"httpd", r"alb", r"elb", r"waf"],
+    "app": [word("app"), word("ap"), r"アプリ", r"application", r"tomcat", r"was", r"backend"],
+    "db" : [word("db"),  r"DBサーバ", r"データベース", r"mysql", r"postgres", r"oracle", r"rds"],
 }
 
 # ===== プロトコル検出パターン =====
 PROTOCOL_PATTERNS = {
-    "ssh": [r"(?i)\bssh\b", r"\b22/tcp\b", r"(?<!\d)22(?!\d)"],
-    "telnet": [r"(?i)\btelnet\b", r"\b23/tcp\b", r"(?<!\d)23(?!\d)", r"テルネット"],
-    "http": [r"(?i)\bhttp\b", r"\b80/tcp\b", r"(?<!\d)80(?!\d)"],
-    "https": [r"(?i)\bhttps\b", r"\b443/tcp\b", r"(?<!\d)443(?!\d)"],
-    "mysql": [r"(?i)\bmysql\b", r"(?<!\d)3306(?!\d)"],
-    "postgres": [r"(?i)\bpostgres(?:ql)?\b", r"(?<!\d)5432(?!\d)"],
-    "tcp": [r"(?i)\btcp\b"],
-    "udp": [r"(?i)\budp\b"],
+    "ssh": [word("ssh"), rf"(?<!{ASCII_WORD})22/tcp(?!{ASCII_WORD})", r"(?<!\d)22(?!\d)"],
+    "telnet": [word("telnet"), rf"(?<!{ASCII_WORD})23/tcp(?!{ASCII_WORD})", r"(?<!\d)23(?!\d)", r"テルネット"],
+    "http": [word("http"), rf"(?<!{ASCII_WORD})80/tcp(?!{ASCII_WORD})", r"(?<!\d)80(?!\d)"],
+    "https": [word("https"), rf"(?<!{ASCII_WORD})443/tcp(?!{ASCII_WORD})", r"(?<!\d)443(?!\d)"],
+    "mysql": [word("mysql"), r"(?<!\d)3306(?!\d)"],
+    "postgres": [word(r"postgres(?:ql)?"),  # /i は word() が付与
+               # ↑ "postgres" or "postgresql" のどちらも拾う
+               r"(?<!\d)5432(?!\d)"],
+    "tcp": [word("tcp")],
+    "udp": [word("udp")],
 }
 
 FW = "！＂＃＄％＆＇（）＊＋，－．／０１２３４５６７８９：；＜＝＞？" \
@@ -61,6 +75,8 @@ FW = "！＂＃＄％＆＇（）＊＋，－．／０１２３４５６７８�
 HW = "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_" \
      "`abcdefghijklmnopqrstuvwxyz{|}~"
 TRANS_FW2HW = str.maketrans({ord(f): h for f, h in zip(FW, HW)})
+
+
 
 # ===== 幾何ユーティリティ =====
 def rect_area(r): L,T,R,B = r; return max(0.0,(R-L))*max(0.0,(B-T))
@@ -108,18 +124,23 @@ def infer_role(text):
     return None
 
 # ==== Gateway（境界機器）判定 ====
+# 置換後:
 GATEWAY_PATTERNS = [
-    r"(?i)\bgateway\b",     # 英語
-    r"ゲートウェイ",         # 日本語
-    r"(?i)\b[a-z]*gw\b",    # IGW/NATGW/VGW/... も含む（gw, igw, natgw 等）
-    r"(?i)\nat\b",    # NAT
-    r"ナット",    # NAT
+    r"(?i)(?<![A-Za-z0-9])gateway(?![A-Za-z0-9])",   # 英語
+    r"ゲートウェイ|ゲートウエイ",                     # 日本語ゆれも許容
+    r"(?i)(?<![A-Za-z0-9])[a-z]*gw(?![A-Za-z0-9])",  # IGW/NATGW/VGW/GW...
+    r"(?i)(?<![A-Za-z0-9])nat(?![A-Za-z0-9])",       # NAT
+    r"ナット",                                        # 日本語 NAT
 ]
+# 速度最適化（任意。毎回 re.compile しないように）
+GATEWAY_REGEXES = [re.compile(p) for p in GATEWAY_PATTERNS]
+
 def is_gateway_text(s: str) -> bool:
     t = norm_text(s or "")
-    if not t: return False
-    for p in GATEWAY_PATTERNS:
-        if re.search(p, t):
+    if not t:
+        return False
+    for rx in GATEWAY_REGEXES:
+        if rx.search(t):
             return True
     return False
 
@@ -485,11 +506,13 @@ def build_zone_relations(zones_norm):
     n = len(zones_norm)
     parents = {z["zone_id"]: None for z in zones_norm}
 
+    # 親（最小包含）を決定
     for i in range(n):
         zi = zones_norm[i]; ri = zi["zone_rect"]
         best_parent = None; best_area = float("inf")
         for j in range(n):
-            if i == j: continue
+            if i == j: 
+                continue
             zj = zones_norm[j]; rj = zj["zone_rect"]
             if rect_contains(rj, ri):
                 area_j = rect_area(rj)
@@ -498,26 +521,41 @@ def build_zone_relations(zones_norm):
                     best_parent = zj["zone_id"]
         parents[zi["zone_id"]] = best_parent
 
+    # 子リストと深さを作成
     children = {z["zone_id"]: [] for z in zones_norm}
     for cid, pid in parents.items():
         if pid:
             children[pid].append(cid)
 
     def depth_of(zid):
-        d=0; cur=zid; seen=set()
+        d = 0; cur = zid; seen = set()
         while parents.get(cur):
-            if cur in seen: break
-            seen.add(cur); cur = parents[cur]; d+=1
+            if cur in seen: 
+                break
+            seen.add(cur); cur = parents[cur]; d += 1
         return d
 
-    hierarchy = {z["zone_id"]: {"parent": parents[z["zone_id"]], "children": children[z["zone_id"]], "depth": depth_of(z["zone_id"])} for z in zones_norm}
+    hierarchy = {
+        z["zone_id"]: {
+            "parent": parents[z["zone_id"]],
+            "children": children[z["zone_id"]],
+            "depth": depth_of(z["zone_id"])
+        } for z in zones_norm
+    }
 
+    # 重なり／隣接の集計
     overlaps = []
     adjacency = []
     for i in range(n):
         zi = zones_norm[i]; ri = zi["zone_rect"]
         for j in range(i+1, n):
             zj = zones_norm[j]; rj = zj["zone_rect"]
+
+            # 🔴 追加：親子（包含）関係は overlap/adjacency から除外
+            # 直親子だけでなく先祖子孫も除外したいので、rect_contains を使って包括チェック
+            if rect_contains(ri, rj) or rect_contains(rj, ri):
+                continue
+
             inter = rect_intersection(ri, rj)
             if rect_area(inter) > 0.0:
                 overlaps.append((zi["zone_id"], zj["zone_id"]))
@@ -525,6 +563,7 @@ def build_zone_relations(zones_norm):
                 adjacency.append((zi["zone_id"], zj["zone_id"]))
 
     return hierarchy, overlaps, adjacency
+
 
 # ===== ゾーン割当（最も内側優先＋外部は Internet へ） =====
 def assign_nodes_to_most_specific_zone(nodes, zones_norm):
@@ -584,25 +623,25 @@ def update_edge_zone_tags(edges, assigns):
 # ===== Gateway（境界機器）の「内側ゾーン」再割当 =====
 def adjust_gateway_to_inner_zone(assigns, edges, zones_norm, hierarchy, by_id):
     """
-    境界機器（GW/ゲートウェイ/gateway を含むラベル）を、幾何情報に基づいて再割当する。
-      1) 自身が包含されているゾーンのうち最も深いゾーンへ（同深度は面積が小さい方）
-      2) 無ければ、交差しているゾーンのうち最も深いゾーンへ（同深度は交差面積が大きい方、次点で面積が小さい方）
-      3) それも無ければ Internet 扱い（zone_internet）
+    境界機器（GW/ゲートウェイ/gateway/NAT/IGW 等）を幾何に基づき再割当。
+      - 包含/交差の両方を同時に候補化し、最も“内側（depth最大）”を採用
+      - depth同率なら: 包含を優先
+      - 交差同士なら: 交差面積が大きい方 → さらに同率なら ゾーン面積が小さい方
+      - どこにも包含/交差しなければ Internet 扱い
     """
-    # 補助: depth 取得
     def depth(zid: str) -> int:
         if not hierarchy:
             return 0
         info = hierarchy.get(zid) or {}
         return int(info.get("depth", 0))
 
-    # 便利マップ
     zone_info = {z["zone_id"]: z for z in zones_norm}
 
     for a in assigns:
         nid = a["node_id"]
-        txt = a.get("effective_text") or a.get("text_raw") or ""
-        if not is_gateway_text(txt):
+        tnorm = norm_text(a.get("effective_text") or a.get("text_raw") or "")
+        # ★ ここだけ変更：既存の is_gateway_text() を使用（GATEWAY_PATTERNS を再利用）
+        if not is_gateway_text(tnorm):
             continue
 
         sh = by_id.get(nid)
@@ -612,69 +651,47 @@ def adjust_gateway_to_inner_zone(assigns, edges, zones_norm, hierarchy, by_id):
         if not is_valid_rect(nr):
             continue
 
-        # 1) 包含候補（Internet は除外）
-        contain_cands = []
+        candidates = []  # (zid, depth, relation_rank, inter_area, zone_area)
+                         # relation_rank: 0=contain, 1=intersect
+
         for z in zones_norm:
             zid = z["zone_id"]
             if zid == "zone_internet":
                 continue
             zr = z["zone_rect"]
+            d  = depth(zid)
+
             if rect_contains(zr, nr):
-                # (zid, depth, zone_area)
-                contain_cands.append((zid, depth(zid), rect_area(zr)))
-
-        if contain_cands:
-            # 最も深い → depth 降順、同深度は面積が小さい（より内側）
-            contain_cands.sort(key=lambda t: (-t[1], t[2]))
-            target = contain_cands[0][0]
-            if target != a.get("zone_id"):
-                a["zone_id"] = target
-                a["zone_normalized"] = zone_info.get(target, {}).get("normalized", a.get("zone_normalized"))
-                note = a.get("note")
-                tag = "auto-reassigned-[gateway]-by-geom:contain"
-                a["note"] = f"{note};{tag}" if note else tag
-                if a.get("confidence") in (None, "low", "medium"):
-                    a["confidence"] = "high"
-            continue  # 包含が最優先
-
-        # 2) 交差候補（Internet は除外）
-        intersect_cands = []
-        for z in zones_norm:
-            zid = z["zone_id"]
-            if zid == "zone_internet":
+                candidates.append((zid, d, 0, 0.0, rect_area(zr)))
                 continue
-            zr = z["zone_rect"]
+
             inter = rect_intersection(zr, nr)
             ia = rect_area(inter)
-            if ia > 0.0:
-                # (zid, depth, inter_area, zone_area)
-                intersect_cands.append((zid, depth(zid), ia, rect_area(zr)))
+            if ia > 0.0:  # 接触のみは採用しない（要件に合わせる）
+                candidates.append((zid, d, 1, ia, rect_area(zr)))
 
-        if intersect_cands:
-            # 最も深い → depth 降順
-            # 同深度 → 交差面積が大きい方
-            # さらに同率 → ゾーン枠面積が小さい方（より内側）
-            intersect_cands.sort(key=lambda t: (-t[1], -t[2], t[3]))
-            target = intersect_cands[0][0]
+        if candidates:
+            # 1) depth 大 2) 包含(0)優先 3) 交差は面積大 4) ゾーン面積小
+            candidates.sort(key=lambda t: (-t[1], t[2], -t[3], t[4]))
+            target, _, rel_rank, _, _ = candidates[0]
+
             if target != a.get("zone_id"):
                 a["zone_id"] = target
                 a["zone_normalized"] = zone_info.get(target, {}).get("normalized", a.get("zone_normalized"))
-                note = a.get("note")
-                tag = "auto-reassigned-[gateway]-by-geom:intersect"
-                a["note"] = f"{note};{tag}" if note else tag
+                how = "contain" if rel_rank == 0 else "intersect"
+                tag = f"auto-reassigned-[gateway]-prefer-deeper({how})"
+                a["note"] = f"{a.get('note','')};{tag}".strip(";")
                 if a.get("confidence") in (None, "low", "medium"):
                     a["confidence"] = "high"
-            continue
-
-        # 3) どのゾーンとも接しない → Internet 扱い
-        if a.get("zone_id") != "zone_internet":
-            a["zone_id"] = "zone_internet"
-            a["zone_normalized"] = "internet"
-            note = a.get("note")
-            tag = "auto-reassigned-[gateway]-to-internet(no-geom-contact)"
-            a["note"] = f"{note};{tag}" if note else tag
-            if a.get("confidence") in (None, "low", "medium"):
-                a["confidence"] = "high"
+        else:
+            # 幾何学的にどの内側ゾーンとも包含/交差していない → Internet
+            if a.get("zone_id") != "zone_internet":
+                a["zone_id"] = "zone_internet"
+                a["zone_normalized"] = "internet"
+                tag = "auto-reassigned-[gateway]-to-internet(no-geom-contact)"
+                a["note"] = f"{a.get('note','')};{tag}".strip(";")
+                if a.get("confidence") in (None, "low", "medium"):
+                    a["confidence"] = "high"
 
 
 # ===== レポート（人向け：label_raw 主体） =====

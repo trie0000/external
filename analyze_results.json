@@ -70,12 +70,7 @@
         "depth": 1
       }
     },
-    "overlaps": [
-      [
-        "Rectangle 5",
-        "Rectangle 1"
-      ]
-    ],
+    "overlaps": [],
     "adjacency": []
   },
   "assignments": [
@@ -92,14 +87,15 @@
     },
     {
       "node_id": "Rectangle 3",
-      "zone_id": "Rectangle 5",
-      "zone_normalized": "cloud_aws",
+      "zone_id": "Rectangle 1",
+      "zone_normalized": "vpc",
       "confidence": "high",
       "overlap": 1.0,
       "text_raw": "インターネットGW",
       "text_source": "TextFrame2.debug",
       "effective_text": "インターネットGW",
-      "inside_texts": []
+      "inside_texts": [],
+      "note": "auto-reassigned-[gateway]-prefer-deeper(intersect)"
     },
     {
       "node_id": "Rectangle 4",
@@ -125,7 +121,7 @@
       "protocol": "unknown",
       "protocol_raw": "",
       "src_zone": "zone_internet",
-      "dst_zone": "Rectangle 5"
+      "dst_zone": "Rectangle 1"
     },
     {
       "id": "Straight Arrow Connector 9",
@@ -136,7 +132,7 @@
       "kind": "connector",
       "protocol": "unknown",
       "protocol_raw": "",
-      "src_zone": "Rectangle 5",
+      "src_zone": "Rectangle 1",
       "dst_zone": "Rectangle 1"
     }
   ],
@@ -146,15 +142,6 @@
       "src_node": "Rectangle 4",
       "dst_node": "Rectangle 3",
       "src_zone": "zone_internet",
-      "dst_zone": "Rectangle 5",
-      "protocol": "unknown",
-      "protocol_raw": ""
-    },
-    {
-      "edge_id": "Straight Arrow Connector 9",
-      "src_node": "Rectangle 3",
-      "dst_node": "Rectangle 2",
-      "src_zone": "Rectangle 5",
       "dst_zone": "Rectangle 1",
       "protocol": "unknown",
       "protocol_raw": ""
